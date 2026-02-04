@@ -14,7 +14,7 @@ export const processReportJob = async () => {
   let failedCount = 0;
 
   //Today july 1, then run report for -> june 1 - 30 
-//Get Last Month because this will run on the first of the month
+  //Get Last Month because this will run on the first of the month
   const from = startOfMonth(subMonths(now, 1));
   const to = endOfMonth(subMonths(now, 1));
 
@@ -77,7 +77,7 @@ export const processReportJob = async () => {
               bulkReports.push({
                 insertOne: {
                   document: {
-                    userId: user.id,
+                    userId: user._id,
                     sentDate: now,
                     period: report.period,
                     status: ReportStatusEnum.SENT,
@@ -103,7 +103,7 @@ export const processReportJob = async () => {
               bulkReports.push({
                 insertOne: {
                   document: {
-                    userId: user.id,
+                    userId: user._id,
                     sentDate: now,
                     period:
                       report?.period ||
