@@ -186,7 +186,7 @@ export const generateReportService = async (
 
   const periodLabel = `${format(fromDate, "MMMM d")} - ${format(toDate, "d, yyyy")}`;
 
-  const insights = await generateInsightsAI({
+  const { insights, budgetPlan } = await generateInsightsAI({
     totalIncome,
     totalExpenses,
     availableBalance,
@@ -209,6 +209,7 @@ export const generateReportService = async (
       })),
     },
     insights,
+    budgetPlan,
   };
 };
 
@@ -248,12 +249,17 @@ async function generateInsightsAI({
     const response = result.text;
     const cleanedText = response?.replace(/```(?:json)?\n?/g, "").trim();
 
-    if (!cleanedText) return [];
+    if (!cleanedText) return { insights: [], budgetPlan: [] };
 
     const data = JSON.parse(cleanedText);
-    return data;
+
+    return {
+      insights: data.insights || [],
+      budgetPlan: data.budgetPlan || [],
+    };
   } catch (error) {
-    return [];
+    console.error("Error generating AI insights:", error);
+    return { insights: [], budgetPlan: [] };
   }
 }
 

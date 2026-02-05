@@ -59,6 +59,7 @@ export const processReportJob = async () => {
                 savingsRate: report.summary.savingsRate,
                 topSpendingCategories: report.summary.topCategories,
                 insights: report.insights,
+                budgetPlan: report.budgetPlan,
               },
               frequency: setting.frequency!,
             });
@@ -81,6 +82,8 @@ export const processReportJob = async () => {
                     sentDate: now,
                     period: report.period,
                     status: ReportStatusEnum.SENT,
+                    insights: report.insights,
+                    budgetPlan: report.budgetPlan,
                     createdAt: now,
                     updatedAt: now,
                   },

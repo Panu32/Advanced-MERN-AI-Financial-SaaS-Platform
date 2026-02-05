@@ -15,6 +15,7 @@ export const getReportEmailTemplate = (
     savingsRate,
     topSpendingCategories,
     insights,
+    budgetPlan,
   } = reportData;
 
   const reportTitle = `${capitalizeFirstLetter(frequency)} Report`;
@@ -30,6 +31,10 @@ export const getReportEmailTemplate = (
 
   const insightsList = insights
     .map((insight: string) => `<li>${insight}</li>`)
+    .join("");
+
+  const budgetPlanList = budgetPlan
+    .map((plan: string) => `<li>${plan}</li>`)
     .join("");
 
   const currentYear = new Date().getFullYear();
@@ -85,6 +90,13 @@ export const getReportEmailTemplate = (
                  <ul style="padding-left: 20px; margin: 0; font-size: 16px;">
                    ${insightsList}
                  </ul>
+
+                 <hr style="margin: 20px 0; border: none; border-top: 1px solid #e0e0e0;" />
+                 <h4 style="margin: 0 0 10px; font-size: 16px;">📉 Smart Budget Plan for Next Month</h4>
+                 <ul style="padding-left: 20px; margin: 0; font-size: 16px;">
+                   ${budgetPlanList}
+                 </ul>
+
                  <p style="margin-top: 30px; font-size: 13px; color: #888;">This report was generated automatically based on your recent activity.</p>
                </td>
              </tr>

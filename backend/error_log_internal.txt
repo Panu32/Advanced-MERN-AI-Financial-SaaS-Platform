@@ -1,0 +1,10 @@
+MissingSchemaError: Schema hasn't been registered for model "User".
+Use mongoose.model(name, schema)
+    at NativeConnection.model (C:\Users\prana\OneDrive\Documents\Finora_AI_Finance_App\Advanced-MERN-AI-Financial-SaaS-Platform\backend\node_modules\mongoose\lib\connection.js:1491:13)
+    at _getModelFromConn (C:\Users\prana\OneDrive\Documents\Finora_AI_Finance_App\Advanced-MERN-AI-Financial-SaaS-Platform\backend\node_modules\mongoose\lib\helpers\populate\getModelsMapForPopulate.js:579:15)
+    at addModelNamesToMap (C:\Users\prana\OneDrive\Documents\Finora_AI_Finance_App\Advanced-MERN-AI-Financial-SaaS-Platform\backend\node_modules\mongoose\lib\helpers\populate\getModelsMapForPopulate.js:507:17)
+    at getModelsMapForPopulate (C:\Users\prana\OneDrive\Documents\Finora_AI_Finance_App\Advanced-MERN-AI-Financial-SaaS-Platform\backend\node_modules\mongoose\lib\helpers\populate\getModelsMapForPopulate.js:208:7)
+    at _populatePath (C:\Users\prana\OneDrive\Documents\Finora_AI_Finance_App\Advanced-MERN-AI-Financial-SaaS-Platform\backend\node_modules\mongoose\lib\model.js:4439:21)
+    at Function.populate (C:\Users\prana\OneDrive\Documents\Finora_AI_Finance_App\Advanced-MERN-AI-Financial-SaaS-Platform\backend\node_modules\mongoose\lib\model.js:4406:21)
+    at C:\Users\prana\OneDrive\Documents\Finora_AI_Finance_App\Advanced-MERN-AI-Financial-SaaS-Platform\backend\node_modules\mongoose\lib\cursor\queryCursor.js:509:27
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
