@@ -36,7 +36,6 @@ app.use(
 app.get(
   "/",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    throw new BadRequestException("This is a test error");
     res.status(HTTPSTATUS.OK).json({
       message: "Hello Subcribe to the channel",
     });
