@@ -18,6 +18,7 @@ const forceReport = async () => {
         if (settings) {
             const user = settings.userId as any;
             console.log(`Checking settings for user: ${user.email} (${user.name})`);
+            console.log(`>>> TARGET EMAIL: ${user.email} <<<`);
 
             // Force it to be due NOW
             // We set it to 1 minute ago to ensure the query { nextReportDate: { $lte: now } } picks it up
@@ -31,7 +32,17 @@ const forceReport = async () => {
 
             // Run the job
             console.log("🚀 Starting report generation job...");
-            const result = await processReportJob();
+
+            // Override to current month (February)
+            const from = new Date();
+            from.setDate(1); // 1st of current month
+            from.setHours(0, 0, 0, 0);
+
+            const to = new Date(); // Current date/time is fine for end, or end of month
+
+            console.log(`Generating report for: ${from.toISOString()} - ${to.toISOString()}`);
+
+            const result = await processReportJob(from, to);
             console.log("Job Result:", JSON.stringify(result, null, 2));
 
             if (result.success && (result as any).processedCount > 0) {

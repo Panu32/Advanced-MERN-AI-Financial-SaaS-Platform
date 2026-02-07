@@ -10,29 +10,30 @@ const updateEmail = async () => {
         await mongoose.connect(Env.MONGO_URI);
         console.log("Connected to MongoDB");
 
-        // Find the user associated with report settings
-        const settings = await ReportSettingModel.findOne({});
-        if (settings) {
-            const userId = settings.userId;
-            console.log(`Updating email for user ID: ${userId}`);
+        const targetUserId = "692af3992f9d7bf9f9e2a064";
+        const user = await UserModel.findById(targetUserId);
 
-            const updatedUser = await UserModel.findByIdAndUpdate(
-                userId,
-                { email: "pranavvaidya2005@gmail.com" },
-                { new: true }
-            );
-
-            if (updatedUser) {
-                console.log(`✅ User email updated successfully to: ${updatedUser.email}`);
-            } else {
-                console.log("❌ User not found.");
-            }
-        } else {
-            console.log("❌ No report settings found to identify user.");
+        if (!user) {
+            console.log(`❌ User not found for ID: ${targetUserId}`);
+            return;
         }
 
+        console.log(`Current email for user ${user._id}: ${user.email}`);
+
+        const newEmail = "pranavvaidya2005@gmail.com";
+        user.email = newEmail;
+
+        // Mark as modified just in case
+        user.markModified('email');
+
+        await user.save();
+
+        // Fetch again to verify
+        const updatedUser = await UserModel.findById(targetUserId);
+        console.log(`✅ Verified updated email in DB: ${updatedUser?.email}`);
+
     } catch (error) {
-        console.error("❌ Error:", error);
+        console.error("❌ Error updating email:", error);
     } finally {
         await mongoose.disconnect();
     }

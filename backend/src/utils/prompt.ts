@@ -97,13 +97,14 @@ ${categoryList}
     "You stayed under budget this time. That's a win — keep the momentum"
   ],
   "budgetPlan": [
-    "Based on your $450 spend on 'Meals', try capping it at $300 next month.",
-    "Your savings rate is 10%; aim for 15% next month by reducing entertainment costs.",
-    "Set a strict limit of $100 for 'Shopping' to avoid overspending."
+    "Limit dining out to $200 next month based on high restaurant spend.",
+    "Allocate $500 for groceries to stay within healthy limits.",
+    "Try to increase savings to 20% by cutting small daily expenses."
   ]
 }
 
 ⚠️ Output only a **valid JSON Object**. Do not include any explanation, markdown, or notes.
   
-  `.trim();
+  IMPORTANT: The output MUST be a valid raw JSON string. Do not use markdown code blocks like \`\`\`json.Do not add any text before or after the JSON.
+    `.trim();
 };

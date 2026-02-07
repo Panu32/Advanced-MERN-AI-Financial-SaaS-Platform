@@ -9,7 +9,7 @@ type Params = {
   from?: string;
 };
 
-const mailer_sender = `Finora <${Env.RESEND_MAILER_SENDER}>`;
+const mailer_sender = `FinoraAI <${Env.RESEND_MAILER_SENDER}>`;
 
 export const sendEmail = async ({
   to,
@@ -18,11 +18,20 @@ export const sendEmail = async ({
   text,
   html,
 }: Params) => {
-  return await resend.emails.send({
+  const data = await resend.emails.send({
     from,
     to: Array.isArray(to) ? to : [to],
     text,
     subject,
     html,
   });
+
+  if (data.error) {
+    console.error("❌ Resend Error:", JSON.stringify(data.error, null, 2));
+    throw new Error(`Resend Error: ${data.error.message}`);
+  } else {
+    console.log("✅ Resend Success:", JSON.stringify(data.data, null, 2));
+  }
+
+  return data;
 };

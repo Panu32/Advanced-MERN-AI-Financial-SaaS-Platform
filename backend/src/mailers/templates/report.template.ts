@@ -102,7 +102,7 @@ export const getReportEmailTemplate = (
              </tr>
              <tr>
                <td style="background-color: #f0f0f0; text-align: center; padding: 15px; font-size: 12px; color: #999;">
-                 &copy; ${currentYear} Finora. All rights reserved.
+                 &copy; ${currentYear} FinoraAI. All rights reserved.
                </td>
              </tr>
            </table>

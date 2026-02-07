@@ -111,11 +111,10 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
     cell: ({ row }) => (
       <div className="capitalize">
         <span
-          className={`px-2 py-1 rounded-full text-xs ${
-            row.getValue("type") === _TRANSACTION_TYPE.INCOME
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
-          }`}
+          className={`px-2 py-1 rounded-full text-xs ${row.getValue("type") === _TRANSACTION_TYPE.INCOME
+            ? "bg-green-100 text-green-800"
+            : "bg-red-100 text-red-800"
+            }`}
         >
           {row.getValue("type")}
         </span>
@@ -134,11 +133,10 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
 
       return (
         <div
-          className={`text-right font-medium ${
-            type === _TRANSACTION_TYPE.INCOME
-              ? "text-green-600"
-              : "text-destructive"
-          }`}
+          className={`text-right font-medium ${type === _TRANSACTION_TYPE.INCOME
+            ? "text-green-600"
+            : "text-destructive"
+            }`}
         >
           {type === _TRANSACTION_TYPE.EXPENSE ? "-" : "+"}
           {formatCurrency(amount)}
@@ -190,21 +188,21 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
 
       const frequencyMap: FrequencyMapType = isRecurring
         ? {
-            [_TRANSACTION_FREQUENCY.DAILY]: { label: "Daily", icon: RefreshCw },
-            [_TRANSACTION_FREQUENCY.WEEKLY]: {
-              label: "Weekly",
-              icon: RefreshCw,
-            },
-            [_TRANSACTION_FREQUENCY.MONTHLY]: {
-              label: "Monthly",
-              icon: RefreshCw,
-            },
-            [_TRANSACTION_FREQUENCY.YEARLY]: {
-              label: "Yearly",
-              icon: RefreshCw,
-            },
-            DEFAULT: { label: "One-time", icon: CircleDot }, // Fallback
-          }
+          [_TRANSACTION_FREQUENCY.DAILY]: { label: "Daily", icon: RefreshCw },
+          [_TRANSACTION_FREQUENCY.WEEKLY]: {
+            label: "Weekly",
+            icon: RefreshCw,
+          },
+          [_TRANSACTION_FREQUENCY.MONTHLY]: {
+            label: "Monthly",
+            icon: RefreshCw,
+          },
+          [_TRANSACTION_FREQUENCY.YEARLY]: {
+            label: "Yearly",
+            icon: RefreshCw,
+          },
+          DEFAULT: { label: "One-time", icon: CircleDot }, // Fallback
+        }
         : { DEFAULT: { label: "One-time", icon: CircleDot } };
 
       const frequencyKey = isRecurring ? (frequency as string) : "DEFAULT";
@@ -238,7 +236,7 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
 // eslint-disable-next-line react-refresh/only-export-components
 const ActionsCell = ({ row }: { row: any }) => {
   //const isRecurring = row.original.isRecurring;
-  const transactionId = row.original.id;
+  const transactionId = row.original.id || row.original._id;
   const { onOpenDrawer } = useEditTransactionDrawer();
 
   const [duplicateTransaction, { isLoading: isDuplicating }] =

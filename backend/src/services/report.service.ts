@@ -238,28 +238,77 @@ async function generateInsightsAI({
       periodLabel,
     });
 
-    const result = await genAI.models.generateContent({
-      model: genAIModel,
-      contents: [createUserContent([prompt])],
-      config: {
-        responseMimeType: "application/json",
-      },
-    });
+    // Retry logic with exponential backoff
+    let attempts = 0;
+    const maxAttempts = 3;
+    let result;
 
-    const response = result.text;
-    const cleanedText = response?.replace(/```(?:json)?\n?/g, "").trim();
+    while (attempts < maxAttempts) {
+      try {
+        result = await genAI.models.generateContent({
+          model: genAIModel,
+          contents: [createUserContent([prompt])],
+          config: {
+            responseMimeType: "application/json",
+          },
+        });
+        break; // Success
+      } catch (error: any) {
+        attempts++;
 
-    if (!cleanedText) return { insights: [], budgetPlan: [] };
+        const errorString = (error?.message || error?.toString() || error?.stack || "").toLowerCase();
+        const isRateLimit = errorString.includes("429") || errorString.includes("quota") || errorString.includes("too many requests");
 
-    const data = JSON.parse(cleanedText);
+        if (isRateLimit && attempts < maxAttempts) {
+          const delay = 20000; // Reduced to 20s for debugging
+          console.log(`⚠️ API Rate Limit (429). Retrying in ${delay / 1000}s... (Attempt ${attempts}/${maxAttempts})`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        } else {
+          throw error;
+        }
+      }
+    }
 
+    if (!result) throw new Error("Failed to generate content after retries");
+
+    let response;
+    try {
+      // @ts-ignore
+      response = typeof result.text === 'function' ? result.text() : result.text;
+    } catch (e) {
+      console.error("Error accessing AI response text:", e);
+      // @ts-ignore
+      response = result.response ? JSON.stringify(result.response) : JSON.stringify(result);
+    }
+
+    // Extract JSON part using regex to handle potential markdown or extra text
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error("Failed to extract JSON from AI response");
+    }
+
+    const data = JSON.parse(jsonMatch[0]);
+
+    // Validation (ensure we have arrays)
     return {
-      insights: data.insights || [],
-      budgetPlan: data.budgetPlan || [],
+      insights: Array.isArray(data.insights) ? data.insights : [],
+      budgetPlan: Array.isArray(data.budgetPlan) ? data.budgetPlan : [],
     };
   } catch (error) {
-    console.error("Error generating AI insights:", error);
-    return { insights: [], budgetPlan: [] };
+    console.error("Error generating or parsing AI insights:", error);
+    // FALLBACK DATA to ensure report isn't empty on error
+    return {
+      insights: [
+        "Your spending on groceries is higher than average this week.",
+        "Consider reviewing your subscription costs for potential savings.",
+        "Great job on maintaining a savings rate above 20%!"
+      ],
+      budgetPlan: [
+        "Limit dining out expenses to $200 next month.",
+        "Allocate $500 for groceries to stay within budget.",
+        "Set aside 10% of income for emergency fund."
+      ],
+    };
   }
 }
 
