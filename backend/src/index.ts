@@ -55,9 +55,7 @@ app.use(`${BASE_PATH}/report`, passportAuthenticateJwt, reportRoutes);
 app.use(`${BASE_PATH}/analytics`, passportAuthenticateJwt, analyticsRoutes);
 
 app.use(errorHandler);
-app.listen(Env.PORT, () => {
-  console.log("Listening on", Env.PORT);
-});
+
 
 
 app.listen(Env.PORT, async () => {
