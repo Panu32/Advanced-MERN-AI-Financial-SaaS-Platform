@@ -60,9 +60,9 @@ app.use(errorHandler);
 app.listen(Env.PORT, async () => {
   await connctDatabase();
 
-  if (Env.NODE_ENV === "development") {
-    await initializeCrons();
-  }
+//   if (Env.NODE_ENV === "development") {
+//     await initializeCrons();
+//   }
 
   console.log(`Server is running on port ${Env.PORT} in ${Env.NODE_ENV} mode`);
 });
