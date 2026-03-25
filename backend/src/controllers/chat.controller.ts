@@ -22,7 +22,7 @@ export const handleChat = asyncHandler(async (req: Request, res: Response) => {
       history: history || [],
       message: message
     });
-    
+
     res.status(HTTPSTATUS.OK).json({
       message: "Success",
       data: {
@@ -34,7 +34,7 @@ export const handleChat = asyncHandler(async (req: Request, res: Response) => {
     console.error("Python AI Service Error:", error.message);
     const errMessage = error.response?.data?.detail || "Error connecting to AI service. Please ensure the Python microservice is running.";
     res.status(HTTPSTATUS.INTERNAL_SERVER_ERROR).json({
-       message: errMessage
+      message: errMessage
     });
   }
 });

@@ -19,6 +19,10 @@ class ChatRequest(BaseModel):
     history: List[Dict[str, str]]
     message: str
 
+@app.get("/")
+def read_root():
+    return {"status": "ok", "message": "Finora AI Service is running successfully"}
+
 @app.post("/chat")
 async def chat_endpoint(req: ChatRequest):
     try:

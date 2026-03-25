@@ -6,7 +6,7 @@ const envConfig = () => ({
   PORT: getEnv("PORT", "8000"),
   BASE_PATH: getEnv("BASE_PATH", "/api"),
 
-  
+
   MONGO_URI: getEnv("MONGO_URI"),
 
   JWT_SECRET: getEnv("JWT_SECRET", "secert_jwt"),
