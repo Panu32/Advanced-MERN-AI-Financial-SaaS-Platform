@@ -25,6 +25,7 @@ const envConfig = () => ({
   RESEND_MAILER_SENDER: getEnv("RESEND_MAILER_SENDER", ""),
 
   FRONTEND_ORIGIN: getEnv("FRONTEND_ORIGIN", "localhost"),
+  PYTHON_AI_SERVICE_URL: getEnv("PYTHON_AI_SERVICE_URL", "http://127.0.0.1:8001"),
 });
 
 export const Env = envConfig();

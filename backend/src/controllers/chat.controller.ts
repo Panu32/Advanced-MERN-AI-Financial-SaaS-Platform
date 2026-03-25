@@ -3,6 +3,7 @@ import { HTTPSTATUS } from "../config/http.config";
 import { asyncHandler } from "../middlewares/asyncHandler.middlerware";
 import { BadRequestException } from "../utils/app-error";
 import axios from "axios";
+import { Env } from "../config/env.config";
 
 export const handleChat = asyncHandler(async (req: Request, res: Response) => {
   const { message, history } = req.body;
@@ -17,7 +18,7 @@ export const handleChat = asyncHandler(async (req: Request, res: Response) => {
   }
 
   try {
-    const aiResponse = await axios.post("http://127.0.0.1:8001/chat", {
+    const aiResponse = await axios.post(`${Env.PYTHON_AI_SERVICE_URL}/chat`, {
       userId: userId.toString(),
       history: history || [],
       message: message
