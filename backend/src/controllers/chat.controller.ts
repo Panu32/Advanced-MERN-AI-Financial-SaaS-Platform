@@ -18,11 +18,19 @@ export const handleChat = asyncHandler(async (req: Request, res: Response) => {
   }
 
   try {
-    const aiResponse = await axios.post(`${Env.PYTHON_AI_SERVICE_URL}/chat`, {
+    const aiServiceUrl = `${Env.PYTHON_AI_SERVICE_URL}/chat`;
+    console.log(`[ChatController] Outgoing request to: ${aiServiceUrl}`);
+    console.log(`[ChatController] Request body:`, { userId: userId.toString(), message });
+
+    const aiResponse = await axios.post(aiServiceUrl, {
       userId: userId.toString(),
       history: history || [],
       message: message
+    }, {
+      timeout: 30000 // Add 30s timeout for Render free tier wake-up
     });
+
+    console.log(`[ChatController] Success from Python AI Service`);
 
     res.status(HTTPSTATUS.OK).json({
       message: "Success",
@@ -32,7 +40,12 @@ export const handleChat = asyncHandler(async (req: Request, res: Response) => {
     });
 
   } catch (error: any) {
-    console.error("Python AI Service Error:", error.message);
+    console.error("[ChatController] Python AI Service Error:", {
+      message: error.message,
+      url: error.config?.url,
+      response: error.response?.data
+    });
+
     const errMessage = error.response?.data?.detail || "Error connecting to AI service. Please ensure the Python microservice is running.";
     res.status(HTTPSTATUS.INTERNAL_SERVER_ERROR).json({
       message: errMessage

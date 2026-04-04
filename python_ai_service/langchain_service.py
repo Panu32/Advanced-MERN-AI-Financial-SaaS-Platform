@@ -15,7 +15,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 MONGO_URI = os.getenv("MONGO_URI")
+if not MONGO_URI:
+    print("[PythonService] WARNING: MONGO_URI is not set in environment variables.")
+
 client = MongoClient(MONGO_URI)
+print("[PythonService] Connected to MongoDB Atlas")
 
 try:
     db = client.get_default_database()

@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any
 import uvicorn
+import os
 from langchain_service import process_chat
 
 app = FastAPI()
@@ -19,18 +20,22 @@ class ChatRequest(BaseModel):
     history: List[Dict[str, str]]
     message: str
 
-@app.get("/")
-def read_root():
-    return {"status": "ok", "message": "Finora AI Service is running successfully"}
+@app.get("/ping")
+def ping():
+    return {"status": "ok", "service": "Finora AI Service"}
 
 @app.post("/chat")
 async def chat_endpoint(req: ChatRequest):
+    print(f"[PythonService] Received chat request for user: {req.userId}")
     try:
         reply = await process_chat(req.userId, req.history, req.message)
+        print(f"[PythonService] Chat processing successful")
         return {"data": {"reply": reply}}
     except Exception as e:
-        print(e)
+        print(f"[PythonService] ERROR during processing: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8001)
+    # Render and other deployment platforms provide a PORT env variable
+    port = int(os.environ.get("PORT", 8001))
+    uvicorn.run(app, host="0.0.0.0", port=port)
