@@ -20,6 +20,10 @@ class ChatRequest(BaseModel):
     history: List[Dict[str, str]]
     message: str
 
+@app.get("/")
+def read_root():
+    return {"message": "Finora AI Service is online and operational. Use /ping for health checks and /chat for AI interaction."}
+
 @app.get("/ping")
 def ping():
     return {"status": "ok", "service": "Finora AI Service"}
